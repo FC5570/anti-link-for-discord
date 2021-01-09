@@ -3,8 +3,11 @@ const Discord = require('discord.js')
 let arr = ['https', 'http', 'www', 'discord.gg', 'discordapp.com']
 
 
-module.exports = (client, message, options) => {
+module.exports = async (client, message, options) => {
     let warnmsg = (options && options.warnmsg) || `<@${message.author.id}> sending links is prohibited.`;
+    let muteCount = (options && options.muteCount);
+    if(!muteCount) throw new Error('Specfiy a mute role.');
+
     let muteRole = (options && options.muteRole);
     if(!muteRole) throw new Error('Specfiy a mute role.');
 
@@ -14,9 +17,10 @@ module.exports = (client, message, options) => {
     let banCount = (options && options.banCount);
     if(!banCount) throw new Error('Specify the ban count.')
 
-    const member = message.member
-    const warnCount = await db.fetch(`antilinkwarns_${message.guild.id}`)
-    if(warnCount === null) warnCount = db.set(`antilinkwarns_${message.guild.id}_${member.id}`, 1)
+    const memberUser = message.member
+    const user = message.author.id
+    let warnCount = await db.fetch(`antilinkwarns_${message.guild.id}`)
+    if(warnCount === null) warnCount = db.set(`antilinkwarns_${message.guild.id}_${user}`, 1)
     const role = message.guild.roles.cache.find(m => m.name === muteRole)
 
     let found = false;
@@ -26,27 +30,27 @@ module.exports = (client, message, options) => {
     }
 
     if(found) {
-        if(member.hasPermissions("ADMINISTRATOR")) return;
-        warnCount = db.add(`antilinkwarns_${message.guild}_${member.id}`, 1)
+        if(memberUser.hasPermission("ADMINISTRATOR")) return;
+        warnCount = db.add(`antilinkwarns_${message.guild}_${user}`, 1)
         message.delete();
         message.channel.send(`${warnmsg} | You currently have **${warnCount}** warning(s).`)
 
         if(warnCount === muteCount) {
-         message.member.roles.add(mutedRoled)
-         await member.send(`You've been muted in **${message.guild.name}**.\nReason: **Received ${warnCount} warnings for posting links.**`)
-         message.channel.send(`**${member.tag}** has been muted. Reason: Received **${warnCount}** warnings for posting links.`);
+         message.member.roles.add(role)
+         await memberUser.send(`You've been muted in **${message.guild.name}**.\nReason: **Received ${warnCount} warnings for posting links.**`)
+         message.channel.send(`**${memberUser.user.tag}** has been muted. Reason: Received **${warnCount}** warnings for posting links.`);
         }
 
         if(warnCount === kickCount) {
-            message.channel.send(`**${member.tag}** has been kicked. Reason: Received **${warnCount}** warnings for posting links.`)
-            await member.send(`You've been kicked from **${message.guild.name}**.\nReason: **Received ${warnCount} warnings for posting links.**`)
-            await message.member.kick({reason: `Received ${warnCount} warnings for posting links.`})
+            message.channel.send(`**${memberUser.user.tag}** has been kicked. Reason: **Received ${warnCount} warnings for posting links.**`)
+            await memberUser.send(`You've been kicked from **${message.guild.name}**.\nReason: **Received ${warnCount} warnings for posting links.**`)
+            message.member.kick({reason: `Received ${warnCount} warnings for posting links.`})
         }
 
         if(warnCount === banCount) {
-         message.channel.send(`**${member.tag}** has been banned. Reason: Received **${warnCount} warnings for posting links.`)
-         await member.send(`You've been banned from **${message.guild.name}**.\nReason: **Received ${warnCount} warnings for posting links.**`)
-         await message.member.ban({reason: `Received ${warnCount} warnings for posting links.`})
+         message.channel.send(`**${memberUser.user.tag}** has been banned. Reason: Received **${warnCount} warnings for posting links.**`)
+         await memberUser.send(`You've been banned from **${message.guild.name}**.\nReason: **Received ${warnCount} warnings for posting links.**`)
+         message.member.ban({reason: `Received ${warnCount} warnings for posting links.`})
      }
      }
     }
