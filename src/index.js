@@ -29,7 +29,7 @@ module.exports = (client, message, options) => {
         if(member.hasPermissions("ADMINISTRATOR")) return;
         warnCount = db.add(`antilinkwarns_${message.guild}_${member.id}`, 1)
         message.delete();
-        message.channel.send(`${warnMSG} | You currently have **${warnCount}** warning(s).`)
+        message.channel.send(`${warnmsg} | You currently have **${warnCount}** warning(s).`)
 
         if(warnCount === muteCount) {
          message.member.roles.add(mutedRoled)
