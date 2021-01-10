@@ -1,9 +1,9 @@
-# anti-link-discord
+# anti-link-for-discord
  Anti Links package for Discord, prevents links from being posted in chat.
 
 ## Usage 
 ```
-const antiLink = require('anti-link-discord')
+const antiLink = require('anti-link-for-discord')
 
         antiLink(message, {
             warnmsg: `<@${message.author.id}> sending links is prohibited.`, // warn message to send when someone posts a link, default is the provided text.
