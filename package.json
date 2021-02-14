@@ -1,6 +1,6 @@
 {
-  "name": "anti-link-discord",
-  "version": "0.0.1",
+  "name": "anti-link-for-discord",
+  "version": "0.0.2",
   "description": "Anti Links package for Discord, prevents links from being posted in chat.",
   "main": "src/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FC5570/anti-link-discord.git"
+    "url": "git+https://github.com/FC5570/anti-link-for-discord.git"
   },
   "keywords": [
     "anti",
@@ -21,9 +21,9 @@
   "author": "FC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/FC5570/anti-link-discord/issues"
+    "url": "https://github.com/FC5570/anti-link-for-discord/issues"
   },
-  "homepage": "https://github.com/FC5570/anti-link-discord",
+  "homepage": "https://github.com/FC5570/anti-link-for-discord",
   "dependencies": {
     "discord.js": "^12.5.1",
     "quick.db": "^7.1.3"
