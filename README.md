@@ -22,7 +22,6 @@ muteRoleID: "the ID of the role to add to users when they get muted."
 <client>.on("message", (message) => {
     antilink.handleInvites(message)
 })
-         muteCount, kickCount, banCount, muteRoleID
 ```
 
 ## Example Usage:
