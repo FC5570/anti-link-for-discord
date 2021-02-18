@@ -3,8 +3,10 @@
 Anti Links package for Discord, prevents links from being posted in chat.
 
 ## Installation
+
 ```
 npm i anti-link-for-discord
+yarn add anti-link-for-discord (if you're using yarn)
 ```
 
 ## Usage
@@ -16,36 +18,79 @@ warnMsg = "the message to send when a user sends an invite."
 muteCount: "the mute role count to mute members when they send links.",
 kickCount: "same as the above, the count to kick members when they send links",
 banCount: "the count to ban members when they send links",
-muteRoleID: "the ID of the role to add to users when they get muted."
 })
 
 <client>.on("message", (message) => {
     antilink.handleInvites(message)
 })
+
+antilink.on('memberMuted', (message, user, warnCount) => {
+    message.channel.send(`${client.users.cache.get(user).tag} has been Muted for posting invite links. They had ${warnCount} warns.`)
+})
+
+antilink.on('memberKicked', (message, user, warnCount) => {
+    message.channel.send(`${client.users.cache.get(user).tag} has been Kicked for posting invite links. They had ${warnCount} warns.`)
+})
+
+antilink.on('memberBanned', (message, user, warnCount) => {
+    message.channel.send(`${client.users.cache.get(user).tag} has been Banned for posting invite links. They had ${warnCount} warns.`)
+})
+
 ```
+
+## Events
+#### memberMuted
+Is emmited once a user has been muted, returns the user ID and the warnCount.
+
+#### memberKicked
+Is emmited once a user has been kicked, returns the user ID and the warnCount.
+
+#### memberBanned
+Is emmited once the user has been banned, returns the user ID and the warnCount.
+
 
 ## Example Usage:
+
 ```
-const { Client } = require('discord.js')
-const AntiLink = require('anti-link-for-discord')
-const client = new Client()
+const { Client } = require("discord.js");
+const client = new Client();
+const AntiLink = require("anti-link-for-discord");
+
+client.on("ready", () => {
+  console.log(`logged in as ${client.user.tag}`);
+});
 
 const antilink = new AntiLink({
-warnMsg: "Please dont send any links."
-muteCount: 5,
-kickCount: 10,
-banCount: 15,
-muteRoleID: "741998491609595985"
+  warnMsg: "Hey no links",
+  muteCount: 5,
+  kickCount: 10,
+  banCount: 15,
+});
+
+client.on("message", async (message) => {
+  antilink.handleInvites(message);
 })
 
-client.on("message", (message) => {
-    antilink.handleInvites(message)
+antilink.on('memberMuted', (message, user, warns) => {
+  message.guild.members.cache.get(user).roles.add(message.guild.roles.cache.get('mute role ID'))
+  message.channel.send(`${client.users.cache.get(user).tag} has been muted for sending links. They had ${warns} warns.`)
 })
 
-client.login('bot token')
+antilink.on('memberKicked', (message, user, warns) => {
+  message.guild.members.cache.get(user).kick("Sending invite links.")
+  message.channel.send(`${client.users.cache.get(user).tag} has been kicked. for sending links. They had ${warns} warns.`)
+})
+
+antilink.on('memberBanned', (message, user, warns) => {
+  message.guild.members.cache.get(user).ban({reason:"Sending invite links."})
+  message.channel.send(`${client.users.cache.get(user).tag} has been banned. for sending links. They had ${warns} warns.`)
+})
+
+client.login("your bot token");
 ```
 
 ## Important Links:
+
 [Github Repository](https://github.com/FC5570/anti-link-for-discord)
 
 ### If you encounter any issues, please DM me on Discord: FC#5104
