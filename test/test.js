@@ -15,21 +15,37 @@ const antilink = new AntiLink({
 
 client.on("message", async (message) => {
   antilink.handleInvites(message);
-})
+});
 
-antilink.on('memberMuted', (message, user, warns) => {
-  message.guild.members.cache.get(user).roles.add(message.guild.roles.cache.get('773911313230594089'))
-  message.channel.send(`${client.users.cache.get(user).tag} has been muted for sending links. They had ${warns} warns.`)
-})
+antilink.on("memberMuted", (message, user, warns) => {
+  message.guild.members.cache
+    .get(user)
+    .roles.add(message.guild.roles.cache.get("773911313230594089"));
+  message.channel.send(
+    `${
+      client.users.cache.get(user).tag
+    } has been muted for sending links. They had ${warns} warns.`
+  );
+});
 
-antilink.on('memberKicked', (message, user, warns) => {
-  message.guild.members.cache.get(user).kick("Sending invite links.")
-  message.channel.send(`${client.users.cache.get(user).tag} has been kicked. for sending links. They had ${warns} warns.`)
-})
+antilink.on("memberKicked", (message, user, warns) => {
+  message.guild.members.cache.get(user).kick("Sending invite links.");
+  message.channel.send(
+    `${
+      client.users.cache.get(user).tag
+    } has been kicked. for sending links. They had ${warns} warns.`
+  );
+});
 
-antilink.on('memberBanned', (message, user, warns) => {
-  message.guild.members.cache.get(user).ban({reason:"Sending invite links."})
-  message.channel.send(`${client.users.cache.get(user).tag} has been banned. for sending links. They had ${warns} warns.`)
-})
+antilink.on("memberBanned", (message, user, warns) => {
+  message.guild.members.cache
+    .get(user)
+    .ban({ reason: "Sending invite links." });
+  message.channel.send(
+    `${
+      client.users.cache.get(user).tag
+    } has been banned. for sending links. They had ${warns} warns.`
+  );
+});
 
 client.login("your bot token");

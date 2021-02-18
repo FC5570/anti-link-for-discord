@@ -39,15 +39,18 @@ antilink.on('memberBanned', (message, user, warnCount) => {
 ```
 
 ## Events
+
 #### memberMuted
+
 Is emmited once a user has been muted, returns the user ID and the warnCount.
 
 #### memberKicked
+
 Is emmited once a user has been kicked, returns the user ID and the warnCount.
 
 #### memberBanned
-Is emmited once the user has been banned, returns the user ID and the warnCount.
 
+Is emmited once the user has been banned, returns the user ID and the warnCount.
 
 ## Example Usage:
 

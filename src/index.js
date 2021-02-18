@@ -4,7 +4,7 @@ const { EventEmitter } = require("events");
 
 class AntiLink extends EventEmitter {
   constructor(options) {
-    super()
+    super();
     this.options = options;
   }
 
