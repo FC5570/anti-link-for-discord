@@ -29,7 +29,7 @@ Is emmited once the user has been banned, returns the user ID and the warnCount.
 ```
 const AntiLink = require('anti-link-for-discord')
 const antilink = new AntiLink({
-warnMsg = "the message to send when a user sends an invite."
+warnMsg: "the message to send when a user sends an invite.",
 muteCount: "the mute role count to mute members when they send links.",
 kickCount: "same as the above, the count to kick members when they send links",
 banCount: "the count to ban members when they send links",
