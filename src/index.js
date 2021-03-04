@@ -38,15 +38,15 @@ class AntiLink extends EventEmitter {
         message.channel.send(m);
 
         if (warnCount === parseInt(this.options.muteCount)) {
-          this.emit("memberMuted", message, message.author.id, warnCount);
+          this.emit("muteCountReached", message, message.author.id, warnCount);
         }
 
         if (warnCount === parseInt(this.options.kickCount)) {
-          this.emit("memberKicked", message, message.author.id, warnCount);
+          this.emit("kickCountReached", message, message.author.id, warnCount);
         }
 
         if (warnCount === parseInt(this.options.banCount)) {
-          this.emit("memberBanned", message, message.author.id, warnCount);
+          this.emit("banCountReached", message, message.author.id, warnCount);
         }
       }
     }

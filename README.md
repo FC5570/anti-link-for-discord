@@ -11,17 +11,17 @@ yarn add anti-link-for-discord (if you're using yarn)
 
 ## Events
 
-#### memberMuted
+#### muteCountReached
 
-Is emmited once a user has been muted, returns the user ID and the warnCount.
+Is emmited once a user's warnings are equal to the mute count warnings, returns message, the user's ID and the warnCount.
 
-#### memberKicked
+#### kickCountReached
 
-Is emmited once a user has been kicked, returns the user ID and the warnCount.
+Is emmited once a user's warnings are equal to the kick count warnings, returns message, the user's ID and the warnCount.
 
-#### memberBanned
+#### banCountReached
 
-Is emmited once the user has been banned, returns the user ID and the warnCount.
+Is emmited once a user's warnings are equal to the ban count warnings, returns message, the user's ID and the warnCount.
 
 
 ## Usage
