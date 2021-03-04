@@ -23,7 +23,6 @@ Is emmited once a user's warnings are equal to the kick count warnings, returns 
 
 Is emmited once a user's warnings are equal to the ban count warnings, returns message, the user's ID and the warnCount.
 
-
 ## Usage
 
 ```
