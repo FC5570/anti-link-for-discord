@@ -3,6 +3,7 @@
   "version": "3.5.0",
   "description": "Anti Links package for Discord, prevents links from being posted in chat.",
   "main": "src/index.js",
+  "types": "typings/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

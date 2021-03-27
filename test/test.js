@@ -17,7 +17,7 @@ client.on("message", async (message) => {
   antilink.handleInvites(message);
 });
 
-antilink.on("memberMuted", (message, user, warns) => {
+antilink.on('muteCountReached', (message, user, warns) => {
   message.guild.members.cache
     .get(user)
     .roles.add(message.guild.roles.cache.get("773911313230594089"));
@@ -28,7 +28,7 @@ antilink.on("memberMuted", (message, user, warns) => {
   );
 });
 
-antilink.on("memberKicked", (message, user, warns) => {
+antilink.on("kickCountReached", (message, user, warns) => {
   message.guild.members.cache.get(user).kick("Sending invite links.");
   message.channel.send(
     `${
@@ -37,7 +37,7 @@ antilink.on("memberKicked", (message, user, warns) => {
   );
 });
 
-antilink.on("memberBanned", (message, user, warns) => {
+antilink.on("banCountReached", (message, user, warns) => {
   message.guild.members.cache
     .get(user)
     .ban({ reason: "Sending invite links." });
