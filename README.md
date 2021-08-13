@@ -2,98 +2,79 @@
 
 Anti Links package for Discord, prevents links from being posted in chat.
 
+### Note: Please update to v5.0.0+ for a better and accurate anti-link system.
+
 ## Installation
 
-```
+```bash
 npm i anti-link-for-discord
 yarn add anti-link-for-discord (if you're using yarn)
 ```
 
-## Events
+## Example
 
-#### muteCountReached
-
-Is emmited once a user's warnings are equal to the mute count warnings, returns message, the user's ID and the warnCount.
-
-#### kickCountReached
-
-Is emmited once a user's warnings are equal to the kick count warnings, returns message, the user's ID and the warnCount.
-
-#### banCountReached
-
-Is emmited once a user's warnings are equal to the ban count warnings, returns message, the user's ID and the warnCount.
-
-## Usage
-
-```
-const AntiLink = require('anti-link-for-discord')
-const antilink = new AntiLink({
-warnMsg: "the message to send when a user sends an invite.",
-muteCount: "the mute role count to mute members when they send links.",
-kickCount: "same as the above, the count to kick members when they send links",
-banCount: "the count to ban members when they send links",
-})
-
-<client>.on("message", (message) => {
-    antilink.handleInvites(message)
-})
-
-antilink.on('muteCountReached', (message, user, warnCount) => {
-    message.channel.send(`${client.users.cache.get(user).tag} has been Muted for posting invite links. They had ${warnCount} warns.`)
-})
-
-antilink.on('kickCountReached', (message, user, warnCount) => {
-    message.channel.send(`${client.users.cache.get(user).tag} has been Kicked for posting invite links. They had ${warnCount} warns.`)
-})
-
-antilink.on('banCountReached', (message, user, warnCount) => {
-    message.channel.send(`${client.users.cache.get(user).tag} has been Banned for posting invite links. They had ${warnCount} warns.`)
-})
-
-```
-
-## Example Usage:
-
-```
+```js
+const AntiLinkClient = require("../src/index");
 const { Client } = require("discord.js");
-const client = new Client();
-const AntiLink = require("anti-link-for-discord");
+const client = new Client({ intents: ["GUILD_MESSAGES", "GUILDS"] });
 
-client.on("ready", () => {
-  console.log(`logged in as ${client.user.tag}`);
-});
-
-const antilink = new AntiLink({
-  warnMsg: "Hey no links",
+const antilink = new AntiLinkClient({
+  warnMessage: (message) => `${message.author.toString()}, No links.`,
   muteCount: 5,
   kickCount: 10,
   banCount: 15,
+  deleteMessage: true,
 });
 
-client.on("message", async (message) => {
-  antilink.handleInvites(message);
-})
+client.on("ready", () => {
+  console.log("Bot is online");
+});
 
-antilink.on('muteCountReached', (message, user, warns) => {
-  message.guild.members.cache.get(user).roles.add(message.guild.roles.cache.get('mute role ID'))
-  message.channel.send(`${client.users.cache.get(user).tag} has been muted for sending links. They had ${warns} warns.`)
-})
+client.on("messageCreate", (message) => {
+  antilink.handleMessages(message);
+});
 
-antilink.on('kickCountReached', (message, user, warns) => {
-  message.guild.members.cache.get(user).kick("Sending invite links.")
-  message.channel.send(`${client.users.cache.get(user).tag} has been kicked. for sending links. They had ${warns} warns.`)
-})
+antilink.on("muteCountReached", (message, user) => {
+  user.send("You have been muted for sending links");
+  // mute the user here
+});
 
-antilink.on('banCountReached', (message, user, warns) => {
-  message.guild.members.cache.get(user).ban({reason:"Sending invite links."})
-  message.channel.send(`${client.users.cache.get(user).tag} has been banned. for sending links. They had ${warns} warns.`)
-})
+antilink.on("kickCountReached", (message, user) => {
+  user.send("You have been kicked for sending links");
+  // kick the user here
+});
 
-client.login("your bot token");
+antilink.on("banCountReached", (message, user) => {
+  user.send("You have been banned for sending links");
+  // ban the user here
+});
+
+client.login("token of the bot");
 ```
 
-## Important Links:
+## Events
 
-[Github Repository](https://github.com/FC5570/anti-link-for-discord)
+1. 'muteCountReached' _(message, user)_ - Emitted when a member sends links as many times as specified in AntiLinkOptions.muteCount
+2. 'kickCountReached' _(message, user)_ - Emitted when a member sends links as many times as specified in AntiLinkOptions.kickCount
+3. 'banCountReached' _(message, user)_ - Emitted when a member sends links as many times as specified in AntiLinkOptions.banCount
+
+## API
+
+### AntiLinkClient.constructor(options)
+
+`options` is an object which can contain the following:
+
+1. **warnMessage** (string or a function): Sent when a user sends a link or an invite in chat. Can be either a string or a function, a message is sent in the channel if the type of warnMessage is string, or the function is called if the type is a function.
+2. **muteCount** (number): The amount of times a user has to send a link or an invite to be muted (muteCountReached event is emitted).
+3. **kickCount** (number): The amount of times a user has to send a link or an invite to be kicked (kickCountReached event is emitted).
+4. **banCount** (number): The amount of times a user has to send a link or an invite to be banned (banCountReached event is emitted).
+5. **deleteMessage** (boolean): Whether to delete the message (which is a link or an invite).
+6. **ignoredUsers** (array): An array of user IDs to ignore.
+7. **ignoredChannels** (array): An array of channel IDs to ignore.
+8. **ignoredRoles** (array): An array of role IDs to ignore (the users with those roles will be ignored).
+
+### AntiLinkClient.handleMessages(message)
+
+This will initialize the AntiLinkClient and start the anti-link filter.
 
 ### If you encounter any issues, please DM me on Discord: FC#5104
