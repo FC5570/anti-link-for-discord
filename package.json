@@ -24,8 +24,5 @@
   "bugs": {
     "url": "https://github.com/FC5570/anti-link-for-discord/issues"
   },
-  "homepage": "https://github.com/FC5570/anti-link-for-discord",
-  "dependencies": {
-    "discord.js": "^13.0.1"
-  }
+  "homepage": "https://github.com/FC5570/anti-link-for-discord"
 }
